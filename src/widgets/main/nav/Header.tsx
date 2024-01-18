@@ -1,21 +1,34 @@
-import { AppBar, Toolbar } from "@mui/material";
-import React from "react";
-import { HEADER } from "../../../utils/config";
+import { AppBar, Toolbar, Typography } from "@mui/material";
+import React, { CSSProperties } from "react";
+import { HEADER_SPACINGS, HEADER_TITLE } from "../../../utils/config";
 
+const headerStyles: CSSProperties = {
+  display: "flex",
+  justifyContent: "center",
+  alignItems: "center",
+};
 const Header: React.FC = () => {
   return (
     <AppBar
-      sx={{ position: "sticky", bgcolor: "background.header", borderRadius: 0 }}
+      sx={{
+        position: "sticky",
+        bgcolor: "background.header",
+        borderRadius: 0,
+        padding: 0,
+      }}
     >
       <Toolbar
         disableGutters
         sx={{
           height: {
-            xs: HEADER.H_MOBILE,
-            md: HEADER.H_MAIN_DESKTOP,
+            xs: HEADER_SPACINGS.H_MOBILE,
+            md: HEADER_SPACINGS.H_MAIN_DESKTOP,
           },
+          ...headerStyles,
         }}
-      ></Toolbar>
+      >
+        <Typography>{HEADER_TITLE.toUpperCase()}</Typography>
+      </Toolbar>
     </AppBar>
   );
 };

@@ -6,6 +6,7 @@ export const paperOverride: Components<Theme> = {
       root: ({ theme }) => ({
         backgroundImage: "none",
         padding: theme.spacing(2),
+        background: "linear-gradient(179deg,hsla(0,0%,100%,.04),#2e2945)",
 
         [theme.breakpoints.down("md")]: {
           padding: theme.spacing(1),
