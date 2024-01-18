@@ -1,8 +1,4 @@
-import {
-  headerSpacing,
-  routesProps,
-  sideBarConfig,
-} from "../interfaces/utils/IConfig";
+import { headerSpacing, sideBarConfig } from "../interfaces";
 import HomeIcon from "@mui/icons-material/Home";
 import TaskIcon from "@mui/icons-material/Task";
 
@@ -15,25 +11,25 @@ export const HEADER_SPACINGS: headerSpacing = {
 //header title
 export const HEADER_TITLE: string = "Task Manger";
 
+//routing
+export const ROUTES = {
+  ROOT: "/",
+  AUTH: {
+    HOME: "home",
+    ADD_TASK: "add-tasks",
+  },
+};
+
 //side bar configs
 export const SIDE_BARS: sideBarConfig[] = [
   {
     title: "Home",
-    to: "Home",
+    to: ROUTES.ROOT,
     icon: HomeIcon,
   },
   {
     title: "Add Task",
-    to: "add-task",
+    to: ROUTES.AUTH.ADD_TASK,
     icon: TaskIcon,
   },
 ];
-
-//routing
-export const ROUTES: routesProps = {
-  ROOT: "/",
-  AUTH: {
-    HOME: "home",
-    VIEW_TAKS: "tasks",
-  },
-};

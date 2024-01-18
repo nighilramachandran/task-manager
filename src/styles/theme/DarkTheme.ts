@@ -11,12 +11,14 @@ const darkThemeOptions: ThemeOptions = {
       dark: "#000000",
     },
     background: {
-      default: "#060226",
-      header: "#231b41",
+      default: "#101010",
+      // default: "#060226",
+      header: "#272727",
       secondary: "#070322",
+      paper: "#272727",
     },
     primary: {
-      main: "#6b53fe",
+      main: "#d6357e",
     },
   },
   // shape: { ...shapOverrides },

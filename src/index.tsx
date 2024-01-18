@@ -4,6 +4,7 @@ import reportWebVitals from "./reportWebVitals";
 import PrivateRoutes from "./Routes";
 import { CssBaseline, ThemeProvider, createTheme } from "@mui/material";
 import darkThemeOptions from "./styles/theme/DarkTheme";
+import { SnackbarProvider } from "notistack";
 
 const darkTheme = createTheme(darkThemeOptions);
 const root = ReactDOM.createRoot(
@@ -13,8 +14,15 @@ const root = ReactDOM.createRoot(
 root.render(
   <React.StrictMode>
     <ThemeProvider theme={darkTheme}>
-      <CssBaseline enableColorScheme />
-      <PrivateRoutes />
+      <SnackbarProvider
+        maxSnack={2}
+        data-testid="toastid"
+        autoHideDuration={3000}
+        anchorOrigin={{ horizontal: "center", vertical: "top" }}
+      >
+        <CssBaseline enableColorScheme />
+        <PrivateRoutes />
+      </SnackbarProvider>
     </ThemeProvider>
   </React.StrictMode>
 );

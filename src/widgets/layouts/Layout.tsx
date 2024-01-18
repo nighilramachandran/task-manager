@@ -1,7 +1,7 @@
 import React, { CSSProperties } from "react";
 import { Outlet } from "react-router-dom";
 import Header from "../main/nav/Header";
-import { Grid, Paper } from "@mui/material";
+import { Grid, Paper, Stack } from "@mui/material";
 import SideBar from "../../components/SideBar";
 import { SIDE_BARS } from "../../utils/config";
 

@@ -15,13 +15,3 @@ export interface sideBarConfig {
   to: string;
   icon: OverridableComponent<SvgIconTypeMap<{}, "svg">>;
 }
-
-interface NestedRoutes {
-  [key: string]: RouteValue;
-}
-
-type RouteValue = string | NestedRoutes;
-
-export interface routesProps {
-  [key: string]: RouteValue;
-}

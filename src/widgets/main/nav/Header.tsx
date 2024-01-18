@@ -12,7 +12,7 @@ const Header: React.FC = () => {
     <AppBar
       sx={{
         position: "sticky",
-        bgcolor: "background.header",
+        bgcolor: "background.default",
         borderRadius: 0,
         padding: 0,
       }}
