@@ -4,6 +4,7 @@ import { TextField, Typography } from "@mui/material";
 import moment from "moment";
 import { enqueueSnackbar } from "notistack";
 import { taskItems } from "../interfaces/Task";
+import { useAppDispatch } from "../redux/hooks";
 
 const AddTask = () => {
   //states
@@ -54,6 +55,9 @@ const AddTask = () => {
       ),
     },
   ];
+
+  //dispatch
+  const dispatch = useAppDispatch();
 
   //functions
   const handleChangeDueDate = (e: React.ChangeEvent<HTMLInputElement>) => {
