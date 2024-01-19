@@ -131,15 +131,6 @@ const Home: React.FC = () => {
         loading={status === "loading" ? true : false}
         columns={columns}
         disableRowSelectionOnClick
-        // onPage
-        // onPaginationModelChange={(page) => setPage(page + 1)}
-        // onPageChange={(page) => setPage(page + 1)}
-        // pagination
-        // pageSize={10}
-        // paginationMode="server"
-        // page={page - 1}
-        // rowsPerPageOptions={[10]}
-        // rowCount={0}
       />
     </>
   );

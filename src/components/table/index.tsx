@@ -23,8 +23,9 @@ export const CustomTable: FC<CustomTableProps> = (props) => {
     lang === "ar"
       ? arSD.components.MuiDataGrid.defaultProps.localeText
       : enUS.components.MuiDataGrid.defaultProps.localeText;
-  const downMd = useResponsive("down", "md");
-  if (downMd) {
+  const downLg = useResponsive("down", "lg");
+
+  if (downLg) {
     const status = props.loading ? "loading" : "data";
     const pagesCount = Math.ceil(props.rowCount! / props.pageSize!);
     return (
