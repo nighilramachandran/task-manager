@@ -61,6 +61,7 @@ const AddTask: React.FC = () => {
     <CustomForm
       formName="form"
       inputs={inputs}
+      resetFrom
       onSubmit={(vals) => handleAddTask(vals)}
       submitLable={"Add Task"}
     ></CustomForm>

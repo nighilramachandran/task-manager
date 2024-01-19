@@ -27,7 +27,7 @@ const Date: React.FC<dateProps> = ({ startDate, handleDateChange }) => {
         type="date"
         name="due-date"
         onChange={handleChangeDueDate}
-        value={moment(startDate).format("DD-MM-YYYY")}
+        value={moment(startDate).format("YYYY-MM-DD")}
         InputProps={{
           sx: {
             bgcolor: "background.default",

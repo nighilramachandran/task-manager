@@ -33,42 +33,55 @@ const TaskSlice = createSlice({
         });
       } else {
         const id = uuidv4();
-        const taskWithId = { ...payload, id };
-        state.taskItems.push(taskWithId);
+        const taskWithIdAndStatus = { ...payload, id, isCompleted: false };
+        state.taskItems.push(taskWithIdAndStatus);
         enqueueSnackbar(`Task Added succesfully`, {
           variant: "success",
         });
       }
     },
+    ChangeStatus: (
+      state,
+      { payload }: PayloadAction<{ id: string; isCompleted: boolean }>
+    ) => {
+      const index = state.taskItems.findIndex((task) => task.id === payload.id);
+
+      if (index !== -1) {
+        state.taskItems[index].isCompleted = payload.isCompleted;
+      }
+    },
+    DeleteTask: (state, { payload }: PayloadAction<string>) => {
+      state.taskItems = state.taskItems.filter((task) => task.id !== payload);
+    },
   },
 });
 
-export const { setStatus, AddTask } = TaskSlice.actions;
+export const { setStatus, AddTask, ChangeStatus, DeleteTask } =
+  TaskSlice.actions;
 
+//add tasks
 export const AddTaskFunc =
   (task: TaskItems): AppThunk =>
   async (dispatch) => {
     dispatch(setStatus("loading"));
     dispatch(AddTask(task));
+    dispatch(setStatus("data"));
+  };
 
-    // try {
-    //   const response = await axios.post(
-    //     "https://jsonplaceholder.typicode.com/posts",
-    //     req
-    //   );
-
-    //   if (response.status === 201) {
-    //     dispatch(setStatus("data"));
-    //     enqueueSnackbar("success", {
-    //       variant: "success",
-    //     });
-    //   } else {
-    //     enqueueSnackbar("Something went wrong", {
-    //       variant: "error",
-    //     });
-    //   }
-    // } catch (error: any) {
-    //   dispatch(setStatus("error"));
-    // }
+//change the status
+export const ChangeStatusFunc =
+  (req: { id: string; isCompleted: boolean }): AppThunk =>
+  async (dispatch) => {
+    dispatch(setStatus("loading"));
+    dispatch(ChangeStatus(req));
+    dispatch(setStatus("data"));
+  };
+//Delete task
+export const DeleteTaskFunc =
+  (req: string): AppThunk =>
+  async (dispatch) => {
+    dispatch(setStatus("loading"));
+    dispatch(DeleteTask(req));
+    dispatch(setStatus("data"));
   };
 export default TaskSlice;

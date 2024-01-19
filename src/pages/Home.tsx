@@ -1,117 +1,107 @@
 import { GridColDef } from "@mui/x-data-grid";
 import React, { useState } from "react";
 import { CustomTable } from "../components/table";
-import { useAppSelector } from "../redux/hooks";
-import { Typography } from "@mui/material";
+import { useAppDispatch, useAppSelector } from "../redux/hooks";
+import { Button, Stack, SvgIcon, Typography } from "@mui/material";
 import moment from "moment";
-
-const columns: GridColDef[] = [
-  {
-    field: "title",
-    headerName: "Title",
-    flex: 0.1,
-  },
-  {
-    field: "description",
-    headerName: "Description",
-    flex: 0.1,
-  },
-  {
-    field: "dueDate",
-    headerName: "Due Date",
-    flex: 0.1,
-    renderCell: ({ row }) => (
-      <Typography>{moment(row.dueDate).format("DD-MM-YYYY")}</Typography>
-    ),
-  },
-  // {
-  //   field: "type",
-  //   headerName: "side",
-  //   flex: 0.1,
-  //   renderCell: (data: any) => {
-  //     return (
-  //       <Typography
-  //         fontSize={14}
-  //         sx={{
-  //           color:
-  //             data.row.side.toLowerCase() === "sell" ? "text.down" : "text.up",
-  //         }}
-  //       >
-  //         {data.row.side}
-  //       </Typography>
-  //     );
-  //   },
-  // },
-  // {
-  //   field: "coinSymbol",
-  //   headerName: "currency",
-  //   flex: 0.1,
-  //   renderCell: (data: any) => {
-  //     return <Typography fontSize={14}>{data.row.coinSymbol}</Typography>;
-  //   },
-  // },
-  // {
-  //   field: "price",
-  //   headerName: "price",
-  //   flex: 0.1,
-  //   renderCell: (data: any) => {
-  //     return (
-  //       <Typography fontSize={14}>
-  //         {Number(parseFloat(data.row.price).toFixed(2)).toLocaleString()}
-  //       </Typography>
-  //     );
-  //   },
-  // },
-  // {
-  //   field: "quantity",
-  //   headerName: "quantity",
-  //   flex: 0.1,
-  //   renderCell: (data: any) => {
-  //     return (
-  //       <Typography fontSize={14}>
-  //         {Number(parseFloat(data.row.volume).toFixed(2)).toLocaleString()}
-  //       </Typography>
-  //     );
-  //   },
-  // },
-  // {
-  //   field: "amount",
-  //   headerName: "amount",
-  //   flex: 0.1,
-  //   renderCell: (data: any) => {
-  //     return (
-  //       <Typography fontSize={14}>
-  //         {Number(parseFloat(data.row.totalPrice).toFixed(2)).toLocaleString()}
-  //       </Typography>
-  //     );
-  //   },
-  // },
-  // {
-  //   field: "status_text",
-  //   headerName: "status",
-  //   flex: 0.1,
-  // },
-  // {
-  //   field: "nickName",
-  //   headerName: "conterparty",
-  //   flex: 0.1,
-  //   renderCell: (data: any) => {
-  //     // const router = useRouter()
-  //     return <Typography fontSize={14}>{data.row.realName}</Typography>;
-  //   },
-  // },
-];
+import { ChangeStatusFunc, DeleteTaskFunc } from "../redux/reducers/task";
+import DeleteIcon from "@mui/icons-material/Delete";
+import { CustomModal } from "../components/custom-modal/CustomModal";
+import { DetailView } from "../components/details-view";
 
 const Home: React.FC = () => {
-  const [page, setPage] = useState<number>(1);
-  const { taskItems } = useAppSelector((state) => state.Task);
+  //selectors
+  const { taskItems, status } = useAppSelector((state) => state.Task);
+
+  //dispatch
+  const dispatch = useAppDispatch();
+
+  //columns
+  const columns: GridColDef[] = [
+    {
+      field: "title",
+      headerName: "Title",
+      flex: 0.1,
+    },
+    {
+      field: "description",
+      headerName: "Description",
+      flex: 0.1,
+    },
+    {
+      field: "dueDate",
+      headerName: "Due Date",
+      flex: 0.1,
+      renderCell: ({ row }) => (
+        <Typography>{moment(row.dueDate).format("DD-MM-YYYY")}</Typography>
+      ),
+    },
+    {
+      field: ".",
+      headerName: "Operation",
+      flex: 0.1,
+      renderCell: ({ row }) => (
+        <>
+          <DetailView
+            data={[
+              { name: "Ditle", value: row.title },
+              { name: "Description", value: row.description },
+              {
+                name: "Status",
+                value: row.isCompleted ? "Completed" : "Pending",
+              },
+            ]}
+          />
+        </>
+      ),
+      disableColumnMenu: true,
+      sortable: false,
+    },
+    {
+      field: "isCompleted",
+      headerName: "Status",
+      flex: 0.1,
+      renderCell: ({ row }) => (
+        <Button
+          variant="outlined"
+          disabled={row.isCompleted}
+          onClick={() => handleStatus(row.id)}
+        >
+          {row.isCompleted ? "Completed" : "Mark as complete"}
+        </Button>
+      ),
+    },
+    {
+      field: "_",
+      headerName: "Delete",
+      flex: 0.1,
+      renderCell: ({ row }) => (
+        <SvgIcon
+          sx={{ color: "primary.main", cursor: "pointer" }}
+          component={DeleteIcon}
+          onClick={() => handleDelete(row.id)}
+        />
+      ),
+      disableColumnMenu: true,
+      sortable: false,
+    },
+  ];
+
+  //functions
+  const handleStatus = (id: string) => {
+    dispatch(ChangeStatusFunc({ id, isCompleted: true }));
+  };
+  //functions
+  const handleDelete = (id: string) => {
+    dispatch(DeleteTaskFunc(id));
+  };
 
   return (
     <>
       <CustomTable
         autoHeight
         rows={taskItems ?? []}
-        loading={false}
+        loading={status === "loading" ? true : false}
         columns={columns}
         disableRowSelectionOnClick
         // onPage
