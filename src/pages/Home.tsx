@@ -1,12 +1,11 @@
 import { GridColDef } from "@mui/x-data-grid";
-import React, { useState } from "react";
+import React from "react";
 import { CustomTable } from "../components/table";
 import { useAppDispatch, useAppSelector } from "../redux/hooks";
-import { Button, Stack, SvgIcon, Typography } from "@mui/material";
+import { Button, SvgIcon, Typography } from "@mui/material";
 import moment from "moment";
 import { ChangeStatusFunc, DeleteTaskFunc } from "../redux/reducers/task";
 import DeleteIcon from "@mui/icons-material/Delete";
-import { CustomModal } from "../components/custom-modal/CustomModal";
 import { DetailView } from "../components/details-view";
 import { EditForm } from "../components/form-edit";
 
