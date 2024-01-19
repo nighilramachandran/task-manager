@@ -53,10 +53,16 @@ const TaskSlice = createSlice({
     DeleteTask: (state, { payload }: PayloadAction<string>) => {
       state.taskItems = state.taskItems.filter((task) => task.id !== payload);
     },
+    UpdateTask: (state, { payload }: PayloadAction<TaskItems>) => {
+      const index = state.taskItems.findIndex((task) => task.id === payload.id);
+      if (index !== -1) {
+        state.taskItems[index] = payload;
+      }
+    },
   },
 });
 
-export const { setStatus, AddTask, ChangeStatus, DeleteTask } =
+export const { setStatus, AddTask, ChangeStatus, DeleteTask, UpdateTask } =
   TaskSlice.actions;
 
 //add tasks
@@ -82,6 +88,14 @@ export const DeleteTaskFunc =
   async (dispatch) => {
     dispatch(setStatus("loading"));
     dispatch(DeleteTask(req));
+    dispatch(setStatus("data"));
+  };
+//Delete task
+export const UpdateTaskFunc =
+  (task: TaskItems): AppThunk =>
+  async (dispatch) => {
+    dispatch(setStatus("loading"));
+    dispatch(UpdateTask(task));
     dispatch(setStatus("data"));
   };
 export default TaskSlice;

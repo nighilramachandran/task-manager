@@ -8,6 +8,7 @@ import { ChangeStatusFunc, DeleteTaskFunc } from "../redux/reducers/task";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { CustomModal } from "../components/custom-modal/CustomModal";
 import { DetailView } from "../components/details-view";
+import { EditForm } from "../components/form-edit";
 
 const Home: React.FC = () => {
   //selectors
@@ -22,11 +23,15 @@ const Home: React.FC = () => {
       field: "title",
       headerName: "Title",
       flex: 0.1,
+      disableColumnMenu: true,
+      sortable: false,
     },
     {
       field: "description",
       headerName: "Description",
       flex: 0.1,
+      disableColumnMenu: true,
+      sortable: false,
     },
     {
       field: "dueDate",
@@ -44,8 +49,12 @@ const Home: React.FC = () => {
         <>
           <DetailView
             data={[
-              { name: "Ditle", value: row.title },
+              { name: "Title", value: row.title },
               { name: "Description", value: row.description },
+              {
+                name: "Due Date",
+                value: moment(row.dueDate).format("DD-MM-YYYY"),
+              },
               {
                 name: "Status",
                 value: row.isCompleted ? "Completed" : "Pending",
@@ -53,6 +62,38 @@ const Home: React.FC = () => {
             ]}
           />
         </>
+      ),
+      disableColumnMenu: true,
+      sortable: false,
+    },
+
+    {
+      field: ",",
+      headerName: "Edit",
+      flex: 0.1,
+      renderCell: ({ row }) => (
+        <EditForm
+          data={{
+            id: row.id,
+            title: row.title,
+            description: row.description,
+            dueDate: row.dueDate,
+          }}
+        />
+      ),
+      disableColumnMenu: true,
+      sortable: false,
+    },
+    {
+      field: "_",
+      headerName: "Delete",
+      flex: 0.1,
+      renderCell: ({ row }) => (
+        <SvgIcon
+          sx={{ color: "primary.main", cursor: "pointer" }}
+          component={DeleteIcon}
+          onClick={() => handleDelete(row.id)}
+        />
       ),
       disableColumnMenu: true,
       sortable: false,
@@ -70,20 +111,6 @@ const Home: React.FC = () => {
           {row.isCompleted ? "Completed" : "Mark as complete"}
         </Button>
       ),
-    },
-    {
-      field: "_",
-      headerName: "Delete",
-      flex: 0.1,
-      renderCell: ({ row }) => (
-        <SvgIcon
-          sx={{ color: "primary.main", cursor: "pointer" }}
-          component={DeleteIcon}
-          onClick={() => handleDelete(row.id)}
-        />
-      ),
-      disableColumnMenu: true,
-      sortable: false,
     },
   ];
 
@@ -112,7 +139,7 @@ const Home: React.FC = () => {
         // paginationMode="server"
         // page={page - 1}
         // rowsPerPageOptions={[10]}
-        rowCount={0}
+        // rowCount={0}
       />
     </>
   );
