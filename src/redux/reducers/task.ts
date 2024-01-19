@@ -3,6 +3,7 @@ import { AppThunk } from "../store";
 import { RequestStatus } from "../../interfaces";
 import { enqueueSnackbar } from "notistack";
 import { taskItems as TaskItems } from "../../interfaces/Task";
+import { v4 as uuidv4 } from "uuid";
 
 interface InitialState {
   status: RequestStatus;
@@ -21,26 +22,34 @@ const TaskSlice = createSlice({
     setStatus: (state, { payload }: PayloadAction<RequestStatus>) => {
       state.status = payload;
     },
-    AddTask: (state, { payload }: PayloadAction<TaskItems[]>) => {
-      // const existingIndex = state.taskItems.findIndex(
-      //   (task) => task.index === payload.index
-      // );
-      // if (existingIndex !== -1) {
-      //   state.poll[existingIndex] = payload;
-      // } else {
-      //   state.poll.push(payload);
-      // }
+    AddTask: (state, { payload }: PayloadAction<TaskItems>) => {
+      const existingIndex = state.taskItems.findIndex(
+        (task) => task.title === payload.title
+      );
+
+      if (existingIndex !== -1) {
+        enqueueSnackbar(`Task with Title ${payload.title} already exist`, {
+          variant: "error",
+        });
+      } else {
+        const id = uuidv4();
+        const taskWithId = { ...payload, id };
+        state.taskItems.push(taskWithId);
+        enqueueSnackbar(`Task Added succesfully`, {
+          variant: "success",
+        });
+      }
     },
   },
 });
 
 export const { setStatus, AddTask } = TaskSlice.actions;
 
-export const AddTaskAsync =
-  (req: TaskItems[]): AppThunk =>
+export const AddTaskFunc =
+  (task: TaskItems): AppThunk =>
   async (dispatch) => {
     dispatch(setStatus("loading"));
-    dispatch(AddTask(req));
+    dispatch(AddTask(task));
 
     // try {
     //   const response = await axios.post(

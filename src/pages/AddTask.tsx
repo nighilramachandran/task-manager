@@ -1,12 +1,12 @@
-import React, { useState } from "react";
-import { CustomForm, CustomInputFormProps } from "../form";
-import { TextField, Typography } from "@mui/material";
+import { useState } from "react";
+import { CustomForm, CustomInputFormProps } from "../components/form";
 import moment from "moment";
-import { enqueueSnackbar } from "notistack";
 import { taskItems } from "../interfaces/Task";
 import { useAppDispatch } from "../redux/hooks";
+import { AddTaskFunc } from "../redux/reducers/task";
+import Date from "../components/date/Date";
 
-const AddTask = () => {
+const AddTask: React.FC = () => {
   //states
   const [dueDate, setDueDate] = useState<number>(moment().valueOf());
 
@@ -33,25 +33,11 @@ const AddTask = () => {
       type: "text",
       name: "dueDate",
       colProps: { xs: 12 },
-      component: (formik: any) => (
-        <>
-          <Typography>Due Date</Typography>
-          <TextField
-            type="date"
-            name="due-date"
-            onChange={handleChangeDueDate}
-            value={moment(dueDate).format("YYYY-MM-DD")}
-            InputProps={{
-              sx: {
-                bgcolor: "background.default",
-                ".MuiInputBase-input": {
-                  borderTopRightRadius: "0px !important",
-                  borderBottomRightRadius: "0px !important",
-                },
-              },
-            }}
-          />
-        </>
+      component: () => (
+        <Date
+          startDate={dueDate}
+          handleDateChange={(date) => handleDateChange(date)}
+        />
       ),
     },
   ];
@@ -60,29 +46,24 @@ const AddTask = () => {
   const dispatch = useAppDispatch();
 
   //functions
-  const handleChangeDueDate = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (!e.target.valueAsNumber && !!e.target.valueAsNumber) {
-      enqueueSnackbar("Something went wrong", {
-        variant: "error",
-      });
-    } else {
-      setDueDate(moment(e.target.valueAsNumber).valueOf());
-    }
+
+  //handle add task
+  const handleAddTask = (val: taskItems) => {
+    dispatch(AddTaskFunc({ ...val, dueDate }));
   };
 
-  const handleAddTask = (val: taskItems) => {
-    console.log({ ...val, dueDate });
+  //handle date change
+  const handleDateChange = (date: number) => {
+    setDueDate(date);
   };
 
   return (
-    <>
-      <CustomForm
-        formName="form"
-        inputs={inputs}
-        onSubmit={(vals) => handleAddTask(vals)}
-        submitLable={"Add Task"}
-      ></CustomForm>
-    </>
+    <CustomForm
+      formName="form"
+      inputs={inputs}
+      onSubmit={(vals) => handleAddTask(vals)}
+      submitLable={"Add Task"}
+    ></CustomForm>
   );
 };
 

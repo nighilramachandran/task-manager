@@ -5,7 +5,7 @@ import Grid, { GridProps } from "@mui/material/Grid";
 import Button from "@mui/material/Button";
 import { FormInput } from "./FormInput";
 import LoadingButton from "@mui/lab/LoadingButton";
-import { CustomInputProps, RequestStatus } from "../interfaces";
+import { CustomInputProps, RequestStatus } from "../../interfaces";
 
 interface InputValidation {
   required?: boolean;
